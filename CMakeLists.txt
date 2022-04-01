@@ -1,5 +1,10 @@
-cmake_minimum_required(VERSION 3.22.3)
+cmake_minimum_required(VERSION 3.13.0)
 project(Testfor01 VERSION 1.0.0)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
@@ -40,3 +45,8 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(dependencies/glfw)
 target_include_directories(${PROJECT_NAME} PUBLIC dependencies/glfw/include)
 target_link_libraries(${PROJECT_NAME} glfw)
+
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res
+                  )
